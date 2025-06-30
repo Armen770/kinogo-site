@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KinoGo Clone</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #fff;
+    }
+    header {
+      background-color: #1c1c1c;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+    .search-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      padding: 1rem;
+      background-color: #1c1c1c;
+    }
+    .search-filter input,
+    .search-filter select {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    .movies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
+    }
+    .movie-card {
+      background-color: #222;
+      padding: 0.5rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .movie-card img {
+      max-width: 100%;
+      border-radius: 4px;
+    }
+    .movie-card h3 {
+      font-size: 1rem;
+      margin: 0.5rem 0 0.2rem;
+    }
+    .movie-card p {
+      font-size: 0.8rem;
+      color: #aaa;
+      margin: 0;
+    }
+    .watch-btn {
+      margin-top: 0.5rem;
+      background-color: #e50914;
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <header>KinoGo Clone</header>
+
+  <section class="search-filter">
+    <input type="text" id="search" placeholder="Поиск...">
+    <select id="genre">
+      <option value="">Жанр</option>
+      <option value="action">Боевик</option>
+      <option value="comedy">Комедия</option>
+      <option value="drama">Драма</option>
+    </select>
+    <select id="year">
+      <option value="">Год</option>
+      <option value="2025">2025</option>
+      <option value="2024">2024</option>
+      <option value="2023">2023</option>
+    </select>
+    <select id="country">
+      <option value="">Страна</option>
+      <option value="usa">США</option>
+      <option value="russia">Россия</option>
+      <option value="uk">Великобритания</option>
+    </select>
+  </section>
+
+  <section class="movies-grid" id="movies">
+    <!-- Пример фильма -->
+    <div class="movie-card" data-genre="action" data-year="2024" data-country="usa">
+      <img src="https://via.placeholder.com/200x300" alt="Movie Poster">
+      <h3>Пример фильма</h3>
+      <p>2024 · США · Боевик</p>
+      <button class="watch-btn" onclick="alert('Переход к просмотру')">Смотреть</button>
+    </div>
+    <!-- Добавь больше фильмов здесь -->
+  </section>
+
+  <script>
+    const filters = {
+      search: '',
+      genre: '',
+      year: '',
+      country: ''
+    };
+
+    document.querySelectorAll('.search-filter input, .search-filter select').forEach(el => {
+      el.addEventListener('input', e => {
+        filters[e.target.id] = e.target.value.toLowerCase();
+        filterMovies();
+      });
+    });
+
+    function filterMovies() {
+      const cards = document.querySelectorAll('.movie-card');
+      cards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        const genre = card.dataset.genre.toLowerCase();
+        const year = card.dataset.year;
+        const country = card.dataset.country.toLowerCase();
+
+        const matchesSearch = title.includes(filters.search);
+        const matchesGenre = !filters.genre || genre === filters.genre;
+        const matchesYear = !filters.year || year === filters.year;
+        const matchesCountry = !filters.country || country === filters.country;
+
+        card.style.display = (matchesSearch && matchesGenre && matchesYear && matchesCountry) ? '' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>
